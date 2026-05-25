@@ -18,6 +18,13 @@ try:
 except Exception:
     DB_DISPONIVEL = False
 
+# ── AWS Services ──────────────────────────────────────────────────────────────
+try:
+    import aws_services as aws
+    AWS_DISPONIVEL = aws.AWS_DISPONIVEL
+except Exception:
+    AWS_DISPONIVEL = False
+
 # ── Configuração da página ──────────────────────────────────────────────────
 st.set_page_config(
     page_title="SpotlightIA – Agente para Eventos Privados",
@@ -59,22 +66,81 @@ PLANOS = {
 }
 
 def tela_login():
+    # Hero section com visual profissional
     st.markdown("""
-<div class="login-container">
-  <div class="login-logo">🎉</div>
-  <div class="login-title">SpotlightIA</div>
-  <div class="login-subtitle">Plataforma Inteligente de Eventos Privados</div>
+<div style="text-align:center;padding:20px 0 0">
+  <div style="display:inline-flex;align-items:center;gap:14px;background:rgba(108,99,255,0.06);border:1px solid rgba(108,99,255,0.12);border-radius:30px;padding:8px 20px;margin-bottom:24px">
+    <div style="width:8px;height:8px;border-radius:50%;background:#6BCB77;animation:pulse 2s infinite"></div>
+    <span style="font-size:12px;font-weight:500;color:#a78bfa;letter-spacing:.04em">PLATAFORMA ATIVA · 99.9% UPTIME</span>
+  </div>
 </div>
+<div style="text-align:center;margin-bottom:8px">
+  <div style="font-size:48px;filter:drop-shadow(0 0 20px rgba(108,99,255,0.4));margin-bottom:12px">🎉</div>
+  <div style="font-family:'Syne',Calibri,sans-serif;font-size:42px;font-weight:800;letter-spacing:-.03em;background:linear-gradient(135deg,#6C63FF,#a78bfa,#FF6B6B);background-size:200% 200%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:gradShift 4s ease infinite">SpotlightIA</div>
+  <div style="font-size:15px;color:#7e7ea0;margin-top:6px;font-weight:400">Gestão Inteligente de Eventos Privados</div>
+</div>
+<style>@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(107,203,119,0.4)}50%{box-shadow:0 0 0 8px rgba(107,203,119,0)}}@keyframes gradShift{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}</style>
 """, unsafe_allow_html=True)
 
-    col1, col2, col3 = st.columns([1,2,1])
+    # Features showcase — 3 colunas visuais
+    st.markdown("")
+    col_f1, col_f2, col_f3 = st.columns(3)
+    with col_f1:
+        st.markdown("""<div style="background:linear-gradient(135deg,rgba(108,99,255,0.08),rgba(108,99,255,0.03));border:1px solid rgba(108,99,255,0.12);border-radius:14px;padding:20px;text-align:center;min-height:140px">
+<div style="font-size:28px;margin-bottom:8px">🤖</div>
+<div style="font-size:14px;font-weight:700;margin-bottom:4px">IA com memória</div>
+<div style="font-size:11px;color:#7e7ea0;line-height:1.5">Agente que conhece seus eventos, clientes e RSVPs em tempo real</div>
+</div>""", unsafe_allow_html=True)
+    with col_f2:
+        st.markdown("""<div style="background:linear-gradient(135deg,rgba(255,107,98,0.06),rgba(255,107,98,0.02));border:1px solid rgba(255,107,98,0.12);border-radius:14px;padding:20px;text-align:center;min-height:140px">
+<div style="font-size:28px;margin-bottom:8px">📊</div>
+<div style="font-size:14px;font-weight:700;margin-bottom:4px">26 módulos</div>
+<div style="font-size:11px;color:#7e7ea0;line-height:1.5">CRM, Kanban, RSVP, orçamento, contrato, scoring e muito mais</div>
+</div>""", unsafe_allow_html=True)
+    with col_f3:
+        st.markdown("""<div style="background:linear-gradient(135deg,rgba(107,203,119,0.06),rgba(107,203,119,0.02));border:1px solid rgba(107,203,119,0.12);border-radius:14px;padding:20px;text-align:center;min-height:140px">
+<div style="font-size:28px;margin-bottom:8px">☁️</div>
+<div style="font-size:14px;font-weight:700;margin-bottom:4px">Infraestrutura AWS</div>
+<div style="font-size:11px;color:#7e7ea0;line-height:1.5">S3, Bedrock, SES, Lambda — pronto para escalar</div>
+</div>""", unsafe_allow_html=True)
+
+    # Métricas numéricas
+    st.markdown("")
+    km1, km2, km3, km4 = st.columns(4)
+    km1.markdown("""<div style="text-align:center;padding:12px 0">
+<div style="font-size:28px;font-weight:800;background:linear-gradient(135deg,#6C63FF,#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent">50+</div>
+<div style="font-size:10px;color:#7e7ea0;text-transform:uppercase;letter-spacing:.08em;margin-top:2px">Empresas</div>
+</div>""", unsafe_allow_html=True)
+    km2.markdown("""<div style="text-align:center;padding:12px 0">
+<div style="font-size:28px;font-weight:800;background:linear-gradient(135deg,#6C63FF,#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent">4.400+</div>
+<div style="font-size:10px;color:#7e7ea0;text-transform:uppercase;letter-spacing:.08em;margin-top:2px">Linhas de código</div>
+</div>""", unsafe_allow_html=True)
+    km3.markdown("""<div style="text-align:center;padding:12px 0">
+<div style="font-size:28px;font-weight:800;background:linear-gradient(135deg,#6C63FF,#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent">99.9%</div>
+<div style="font-size:10px;color:#7e7ea0;text-transform:uppercase;letter-spacing:.08em;margin-top:2px">Uptime</div>
+</div>""", unsafe_allow_html=True)
+    km4.markdown("""<div style="text-align:center;padding:12px 0">
+<div style="font-size:28px;font-weight:800;background:linear-gradient(135deg,#6C63FF,#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent">3</div>
+<div style="font-size:10px;color:#7e7ea0;text-transform:uppercase;letter-spacing:.08em;margin-top:2px">Provedores IA</div>
+</div>""", unsafe_allow_html=True)
+
+    st.markdown("")
+    st.markdown("""<div style="height:1px;background:linear-gradient(90deg,transparent,rgba(108,99,255,0.2),transparent);margin:8px 0 16px"></div>""", unsafe_allow_html=True)
+
+    # Login form centralizado
+    col1, col2, col3 = st.columns([1.2, 2, 1.2])
     with col2:
         aba_login, aba_cadastro, aba_planos = st.tabs(["🔑 Login", "📝 Cadastrar", "💎 Planos"])
 
         with aba_login:
-            email_in = st.text_input("E-mail", placeholder="seu@email.com", key="login_email")
-            senha_in = st.text_input("Senha", type="password", key="login_senha")
-            if st.button("Entrar", use_container_width=True, key="btn_login"):
+            st.markdown("""<div style="text-align:center;margin-bottom:12px">
+<div style="font-size:16px;font-weight:700">Acesse sua conta</div>
+<div style="font-size:12px;color:#7e7ea0">Entre com suas credenciais para continuar</div>
+</div>""", unsafe_allow_html=True)
+            email_in = st.text_input("E-mail", placeholder="seu@email.com", key="login_email", label_visibility="collapsed")
+            senha_in = st.text_input("Senha", type="password", key="login_senha", placeholder="Sua senha", label_visibility="collapsed")
+            st.markdown("<div style='height:4px'></div>", unsafe_allow_html=True)
+            if st.button("Entrar →", use_container_width=True, key="btn_login"):
                 tenant_found = None
                 for tid, tdata in st.session_state.clientes_saas.items():
                     if tdata["email"] == email_in and tdata["senha"] == senha_in:
@@ -102,7 +168,10 @@ def tela_login():
                     st.rerun()
                 else:
                     st.error("E-mail ou senha incorretos.")
-            st.caption("Demo: admin@spotlight.com / admin123")
+            st.markdown("""<div style="text-align:center;margin-top:12px;padding:10px;background:rgba(108,99,255,0.06);border:1px solid rgba(108,99,255,0.1);border-radius:8px">
+<div style="font-size:10px;color:#7e7ea0;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px">Acesso demonstração</div>
+<div style="font-size:12px;font-weight:500"><code>admin@spotlight.com</code> · <code>admin123</code></div>
+</div>""", unsafe_allow_html=True)
 
         with aba_cadastro:
             novo_nome  = st.text_input("Nome da empresa", key="cad_nome")
@@ -110,7 +179,8 @@ def tela_login():
             novo_senha = st.text_input("Senha", type="password", key="cad_senha")
             novo_plano = st.selectbox("Plano", ["free","essencial","profissional","enterprise"],
                                       format_func=lambda x: f"{PLANOS[x]['nome']} — {PLANOS[x]['preco']}", key="cad_plano")
-            if st.button("Criar conta", use_container_width=True, key="btn_cadastro"):
+            st.markdown("<div style='height:4px'></div>", unsafe_allow_html=True)
+            if st.button("Criar conta →", use_container_width=True, key="btn_cadastro"):
                 if novo_nome and novo_email and novo_senha:
                     tid = novo_email.split("@")[0].replace(".","_")
                     st.session_state.clientes_saas[tid] = {
@@ -128,12 +198,28 @@ def tela_login():
                     st.warning("Preencha todos os campos.")
 
         with aba_planos:
+            st.markdown("""<div style="text-align:center;margin-bottom:16px">
+<div style="font-size:16px;font-weight:700">Escolha seu plano</div>
+<div style="font-size:12px;color:#7e7ea0">Sem fidelidade · Cancele quando quiser</div>
+</div>""", unsafe_allow_html=True)
             for pid, pdata in PLANOS.items():
-                with st.container():
-                    st.markdown(f"**{pdata['nome']}** — *{pdata['preco']}*")
-                    for f in pdata["features"]:
-                        st.markdown(f"✅ {f}")
-                    st.divider()
+                is_pop = pid == "profissional"
+                emoji_plano = {"free":"🆓","essencial":"📦","profissional":"🏆","enterprise":"👑"}.get(pid,"📦")
+                border_style = "2px solid rgba(108,99,255,0.5)" if is_pop else "1px solid rgba(108,99,255,0.1)"
+                bg_style = "linear-gradient(135deg,rgba(108,99,255,0.1),rgba(108,99,255,0.04))" if is_pop else "rgba(108,99,255,0.03)"
+                with st.expander(f"{emoji_plano} {pdata['nome']} — {pdata['preco']}", expanded=is_pop):
+                    col_pl1, col_pl2 = st.columns([2.5,1])
+                    with col_pl1:
+                        for feat in pdata["features"]:
+                            st.markdown(f"✅ {feat}")
+                    with col_pl2:
+                        max_ev = str(pdata["max_eventos"]) if pdata["max_eventos"] < 999 else "∞"
+                        st.markdown(f"""<div style="text-align:center;background:rgba(108,99,255,0.08);border-radius:12px;padding:16px">
+<div style="font-size:32px;font-weight:800;background:linear-gradient(135deg,#6C63FF,#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent">{max_ev}</div>
+<div style="font-size:10px;color:#7e7ea0;text-transform:uppercase;letter-spacing:.06em;margin-top:2px">Eventos</div>
+</div>""", unsafe_allow_html=True)
+                    if is_pop:
+                        st.markdown("""<div style="background:linear-gradient(135deg,rgba(108,99,255,0.1),rgba(167,139,250,0.08));border:1px solid rgba(108,99,255,0.2);border-radius:8px;padding:8px 12px;text-align:center;margin-top:8px;font-size:12px;font-weight:600;color:#a78bfa">🏆 Mais escolhido por empresas de eventos</div>""", unsafe_allow_html=True)
 
 # ── Estilos customizados ────────────────────────────────────────────────────
 st.markdown("""
@@ -649,6 +735,215 @@ pre { background: var(--surface2) !important; border: 1px solid var(--border) !i
 /* ── Tabs scrollbar ── */
 .stTabs [data-baseweb="tab-list"]::-webkit-scrollbar { height: 3px; }
 .stTabs [data-baseweb="tab-list"]::-webkit-scrollbar-thumb { background: var(--primary); }
+
+/* ═══════════════════════════════════════════════════
+   COMPONENTES EXTRAS — VISUAL REFINADO
+   ═══════════════════════════════════════════════════ */
+
+/* ── Page container — padding e max-width ── */
+.main .block-container {
+    padding: 2rem 2.5rem !important;
+    max-width: 1200px !important;
+}
+
+/* ── Sidebar refinada ── */
+section[data-testid="stSidebar"] > div > div:first-child {
+    padding-top: 1rem !important;
+}
+
+/* ── Markdown headers dentro das tabs ── */
+.stTabs h3 {
+    font-family: var(--font-display) !important;
+    font-size: 1.25rem !important;
+    font-weight: 700 !important;
+    letter-spacing: -0.02em !important;
+    padding-bottom: 4px !important;
+    border-bottom: 2px solid rgba(108,99,255,0.15) !important;
+    margin-bottom: 12px !important;
+}
+
+/* ── Separadores mais elegantes ── */
+.stTabs hr {
+    margin: 1.2rem 0 !important;
+    border: none !important;
+    height: 1px !important;
+    background: linear-gradient(90deg, transparent, rgba(108,99,255,0.2), transparent) !important;
+}
+
+/* ── Botão de chat (send) ── */
+button[data-testid="stChatInputSubmitButton"] {
+    background: var(--primary) !important;
+    color: white !important;
+    border-radius: 8px !important;
+}
+
+/* ── Formulários ── */
+[data-testid="stForm"] {
+    background: var(--surface2) !important;
+    border: 1px solid var(--border) !important;
+    border-radius: var(--radius) !important;
+    padding: 1.5rem !important;
+}
+
+/* ── Columns gap ── */
+[data-testid="stHorizontalBlock"] {
+    gap: 12px !important;
+}
+
+/* ── Number input spinner ── */
+.stNumberInput button {
+    background: var(--surface3) !important;
+    border: 1px solid var(--border) !important;
+    color: var(--text) !important;
+}
+
+/* ── Multiselect tags ── */
+span[data-baseweb="tag"] {
+    background: rgba(108,99,255,0.15) !important;
+    border: 1px solid rgba(108,99,255,0.25) !important;
+    border-radius: 6px !important;
+    color: var(--primary-light) !important;
+}
+
+/* ── Toast / Snackbar ── */
+.stToast {
+    background: var(--surface2) !important;
+    border: 1px solid var(--border) !important;
+    border-radius: var(--radius) !important;
+    color: var(--text) !important;
+}
+
+/* ── Balloons override ── */
+.stBalloons { opacity: 0.8 !important; }
+
+/* ── Date input ── */
+[data-testid="stDateInput"] > div > div {
+    background: var(--surface2) !important;
+    border: 1px solid var(--border) !important;
+    border-radius: var(--radius-sm) !important;
+}
+
+/* ── Empty state ── */
+.stAlert {
+    border-radius: var(--radius-sm) !important;
+    font-size: 13px !important;
+}
+
+/* ── Components HTML iframe ── */
+iframe {
+    border-radius: var(--radius) !important;
+    border: 1px solid var(--border) !important;
+}
+
+/* ── Sidebar nav items hover effect ── */
+.stSelectbox > div:hover {
+    border-color: var(--primary) !important;
+}
+
+/* ── Custom card class for use in st.markdown ── */
+.spotlight-card {
+    background: linear-gradient(135deg, var(--surface2), var(--surface3));
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px 24px;
+    margin-bottom: 12px;
+    transition: all 0.3s ease;
+}
+.spotlight-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-lg);
+    border-color: rgba(108,99,255,0.3);
+}
+.spotlight-card-title {
+    font-family: var(--font-display);
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+.spotlight-card-text {
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.6;
+}
+
+/* ── Status pills ── */
+.pill {
+    display: inline-block;
+    padding: 3px 12px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+}
+.pill-green { background: rgba(107,203,119,0.12); color: #6BCB77; border: 1px solid rgba(107,203,119,0.25); }
+.pill-yellow { background: rgba(255,217,61,0.1); color: #FFD93D; border: 1px solid rgba(255,217,61,0.2); }
+.pill-purple { background: rgba(108,99,255,0.12); color: #a78bfa; border: 1px solid rgba(108,99,255,0.25); }
+.pill-red { background: rgba(255,107,107,0.1); color: #FF6B6B; border: 1px solid rgba(255,107,107,0.25); }
+
+/* ── Kanban columns ── */
+.kanban-col {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 12px;
+    min-height: 200px;
+}
+.kanban-card {
+    background: var(--surface3);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 10px 12px;
+    margin-bottom: 8px;
+    transition: all 0.2s;
+    cursor: default;
+}
+.kanban-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(108,99,255,0.15);
+    border-color: rgba(108,99,255,0.3);
+}
+
+/* ── Pricing card highlight ── */
+.price-highlight {
+    background: linear-gradient(135deg, rgba(108,99,255,0.1), rgba(108,99,255,0.05));
+    border: 2px solid var(--primary) !important;
+    border-radius: var(--radius);
+    padding: 20px;
+    position: relative;
+}
+.price-highlight::before {
+    content: 'POPULAR';
+    position: absolute;
+    top: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--primary);
+    color: white;
+    padding: 3px 16px;
+    border-radius: 12px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+}
+
+/* ── Smooth page transitions ── */
+.main .block-container > div {
+    animation: fadeSlideIn 0.4s ease forwards;
+}
+
+/* ── Custom scrollbar for main content ── */
+.main::-webkit-scrollbar { width: 6px; }
+.main::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 10px; }
+
+/* ── Tooltip styling ── */
+.stTooltipIcon { color: var(--primary) !important; }
+
+/* ── Empty chart placeholder ── */
+.stPlaceholder {
+    background: var(--surface2) !important;
+    border: 1px dashed var(--border) !important;
+    border-radius: var(--radius) !important;
+}
 </style>
 """, unsafe_allow_html=True)
 
@@ -695,11 +990,28 @@ Casamentos · Formaturas · Festas corporativas · Aniversários · Confraterniz
 
 ## USO DA MEMÓRIA
 Você possui memória completa de todos os eventos cadastrados e RSVPs registrados (fornecidos abaixo).
-- Ao mencionar um evento, cite sempre dados reais: nome, data, local e número de convidados
+- Ao mencionar um evento, cite SEMPRE dados reais: nome, data, local e número de convidados
 - Se perguntado sobre RSVPs, informe os números reais de confirmados, pendentes e recusados
 - Ao identificar pendências (ex: muitos pendentes, prazo próximo), alerte proativamente
 - Cruze informações entre eventos quando relevante (ex: dois eventos no mesmo dia)
 - Se o usuário cadastrar um novo evento durante a conversa, incorpore-o naturalmente
+
+## COMPORTAMENTO POR CONTEXTO
+Quando o usuário perguntar sobre temas específicos, responda como especialista:
+- RSVP / presença → cite números reais do evento, sugira enviar lembretes
+- Checklist → liste o que falta fazer com base no tipo de evento
+- Orçamento → calcule estimativas por categoria com base no número de convidados
+- Estrutura / som / luz → recomende equipamentos por porte do evento
+- Buffet → calcule quantidades (porções por pessoa, bebida por hora)
+- Foto / vídeo → sugira cobertura ideal por tipo de evento
+- CRM / clientes → analise LTV, sugira ações de relacionamento
+- Contrato → liste cláusulas importantes para o tipo de evento
+- Cronograma → monte linha do tempo detalhada para o dia do evento
+- Scoring → analise o perfil e sugira estratégia de abordagem
+- Planos / upgrade → explique as diferenças entre os planos e recomende o ideal
+- Logística → calcule vagas de estacionamento e opções de transporte
+
+SEMPRE termine sua resposta com uma sugestão de próximo passo concreto.
 
 Lembre-se: você representa a Spotlight Eventos. Cada interação é uma oportunidade de encantar o cliente e garantir um evento inesquecível."""
 
@@ -809,8 +1121,14 @@ if "messages" not in st.session_state:
 if "thinking" not in st.session_state:
     st.session_state.thinking = False
 
+if "pending_response" not in st.session_state:
+    st.session_state.pending_response = False
+
 if "thinking" not in st.session_state:
     st.session_state.thinking = False
+
+if "pending_response" not in st.session_state:
+    st.session_state.pending_response = False
 
 if "idioma" not in st.session_state:
     st.session_state.idioma = "🇧🇷 Português"
@@ -931,6 +1249,14 @@ with st.sidebar:
   </div>
 </div>
 """, unsafe_allow_html=True)
+    # Info do plano
+    plano_emoji = {"free":"🆓","essencial":"📦","profissional":"🏆","enterprise":"👑"}.get(plano_atual,"📦")
+    st.markdown(f"""<div style="background:rgba(124,106,255,0.08);border:1px solid rgba(124,106,255,0.15);border-radius:10px;padding:10px 12px;margin:4px 0 8px">
+<div style="font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.08em">Plano ativo</div>
+<div style="font-size:16px;font-weight:700;margin-top:2px">{plano_emoji} {plano_info['nome']}</div>
+<div style="font-size:11px;color:var(--text-muted);margin-top:2px">{plano_info['preco']} · {tenant_data.get('max_eventos','—')} eventos</div>
+</div>""", unsafe_allow_html=True)
+
     col_sair1, col_sair2 = st.columns(2)
     with col_sair1:
         if st.button("🚪 Sair", use_container_width=True, key="btn_logout"):
@@ -939,7 +1265,11 @@ with st.sidebar:
             st.rerun()
     with col_sair2:
         if st.button("💎 Upgrade", use_container_width=True, key="btn_upgrade"):
-            st.session_state.show_upgrade = True
+            st.session_state.messages.append({"role": "user", "content": "Quero ver os planos disponíveis para upgrade. Mostre as opções e o que cada plano inclui."})
+            st.session_state.pending_response = True
+            st.rerun()
+
+    st.divider()
 
     # Seletor de idioma
     idioma_sel = st.selectbox("🌐 Idioma / Language", list(IDIOMAS.keys()), index=list(IDIOMAS.keys()).index(st.session_state.idioma), key="sel_idioma", label_visibility="collapsed")
@@ -950,21 +1280,24 @@ with st.sidebar:
 
     st.divider()
 
-    # Provedor de IA — carrega silenciosamente dos Secrets
-    provedores = ["Groq", "Gemini", "HuggingFace"]
-    secret_keys = {"Groq": "GROQ_API_KEY", "Gemini": "GEMINI_API_KEY", "HuggingFace": "HF_API_KEY"}
-    provedor_sel = st.session_state.provedor_ia
-
-    # Tenta carregar a key dos Secrets automaticamente
+    # Provedor de IA — Gemini principal, Groq fallback
+    # Ordem de prioridade: Gemini (6M tokens/dia grátis) > Groq (500k/dia, ultra rápido)
     api_key = ""
-    for nome_prov, nome_secret in secret_keys.items():
+    provedor_sel = ""
+    api_keys_disponiveis = {}
+
+    for nome_secret, nome_prov in [("GEMINI_API_KEY", "gemini"), ("GROQ_API_KEY", "groq")]:
         try:
             chave = st.secrets.get(nome_secret, "")
             if chave:
-                api_key = chave
-                break
+                api_keys_disponiveis[nome_prov] = chave
+                if not api_key:
+                    api_key = chave
+                    provedor_sel = nome_prov
         except Exception:
             continue
+
+    st.session_state.provedor_ia = provedor_sel or "groq"
 
     st.divider()
 
@@ -984,15 +1317,17 @@ with st.sidebar:
     # Info do evento ativo
     if st.session_state.evento_atual:
         ev = st.session_state.evento_atual
-        status_map = {"confirmed": ("✅", "Confirmado"), "pending": ("🟡", "Em planejamento"), "vip": ("⭐", "VIP")}
-        icon, label = status_map.get(ev["status"], ("❓", "Indefinido"))
-        st.info(
-            f"**{ev['nome']}**  \n"
-            f"📅 {ev['data']}  \n"
-            f"📍 {ev['local']}  \n"
-            f"👥 {ev['convidados']} convidados  \n"
-            f"{icon} {label}"
-        )
+        tipo_emoji = {"casamento":"💍","hackathon":"💻","vip":"⭐","corporativo":"💼","aniversario":"🎂","palestra":"🎤"}.get(ev.get("tipo",""),"🎉")
+        status_map = {"confirmed": ("✅", "Confirmado"), "pending": ("🟡", "Planejamento"), "vip": ("⭐", "VIP")}
+        icon, label = status_map.get(ev.get("status",""), ("❓", "—"))
+        st.markdown(f"""<div style="background:linear-gradient(135deg,rgba(124,106,255,0.08),rgba(124,106,255,0.04));border:1px solid rgba(124,106,255,0.15);border-radius:12px;padding:12px 14px;margin-bottom:4px">
+<div style="font-size:14px;font-weight:700">{tipo_emoji} {ev['nome']}</div>
+<div style="font-size:11px;color:var(--text-muted);margin-top:6px;line-height:1.8">
+📅 {ev.get('data','—')}<br>
+📍 {ev.get('local','—')}<br>
+👥 {ev['convidados']} convidados<br>
+{icon} {label}
+</div></div>""", unsafe_allow_html=True)
 
     st.divider()
 
@@ -1043,19 +1378,49 @@ with st.sidebar:
 
     st.divider()
     st.divider()
+    # Status dos serviços
+    servicos_status = []
     if DB_DISPONIVEL:
-        st.markdown("""<div style="background:rgba(107,203,119,0.1);border:1px solid rgba(107,203,119,0.25);border-radius:8px;padding:6px 10px;font-size:11px;color:#6BCB77;font-weight:500">🗄️ SQLite · Dados persistentes</div>""", unsafe_allow_html=True)
-    else:
-        st.markdown("""<div style="background:rgba(255,217,61,0.08);border:1px solid rgba(255,217,61,0.2);border-radius:8px;padding:6px 10px;font-size:11px;color:#FFD93D;font-weight:500">⚠️ Modo memória</div>""", unsafe_allow_html=True)
-    st.markdown("""<div style="text-align:center;font-size:10px;color:var(--text-muted);margin-top:8px;letter-spacing:0.05em">POWERED BY GROQ · LLAMA 3.3</div>""", unsafe_allow_html=True)
+        servicos_status.append("🗄️ SQLite")
+    if AWS_DISPONIVEL:
+        servicos_status.append("☁️ AWS")
+    servicos_status.append(f"{prov_icon} {prov_label}")
+
+    status_html = " · ".join(servicos_status)
+    st.markdown(f"""<div style="background:rgba(107,203,119,0.06);border:1px solid rgba(107,203,119,0.15);border-radius:10px;padding:8px 10px;font-size:10px;color:#6BCB77;font-weight:500;text-align:center;letter-spacing:.03em">{status_html}</div>""", unsafe_allow_html=True)
+    if not DB_DISPONIVEL:
+        st.markdown("""<div style="background:rgba(255,217,61,0.06);border:1px solid rgba(255,217,61,0.12);border-radius:8px;padding:5px 8px;font-size:10px;color:#FFD93D;font-weight:500;text-align:center;margin-top:4px">⚠️ Dados em memória</div>""", unsafe_allow_html=True)
+    if AWS_DISPONIVEL:
+        aws_st = aws.aws_status()
+        s3_ok  = aws_st.get("s3") == "ativo"
+        ses_ok = aws_st.get("ses") == "ativo"
+        bed_ok = aws_st.get("bedrock") == "ativo"
+        aws_label = " · ".join(filter(None, ["S3" if s3_ok else "", "SES" if ses_ok else "", "Bedrock" if bed_ok else ""]))
+        st.markdown(f"""<div style="background:rgba(255,153,0,0.1);border:1px solid rgba(255,153,0,0.25);border-radius:8px;padding:6px 10px;font-size:11px;color:#FF9900;font-weight:500">☁️ AWS · {aws_label or 'Conectado'}</div>""", unsafe_allow_html=True)
+    prov_label = {"gemini": "GEMINI 2.0 FLASH", "groq": "GROQ · LLAMA 3.3"}.get(provedor_sel, "IA")
+    prov_icon  = {"gemini": "🌟", "groq": "⚡"}.get(provedor_sel, "🤖")
+    st.markdown(f"""<div style="text-align:center;font-size:10px;color:var(--text-muted);margin-top:8px;letter-spacing:0.05em">{prov_icon} {prov_label}</div>""", unsafe_allow_html=True)
 
 # ── HELPER: chamada Groq direto ───────────────────────────────────────────────
-def groq_call(prompt: str, system: str = "Você é SpotlightIA, assistente de eventos. Responda em português formal.", max_tokens: int = 1024) -> str:
-    """Chama a API Groq diretamente — usado pelas abas de IA fora do chat."""
+def ia_call(prompt: str, system: str = "Você é SpotlightIA, assistente de eventos. Responda em português formal.", max_tokens: int = 1024) -> str:
+    """Chama a IA — tenta Gemini primeiro, depois Groq como fallback."""
     if not api_key:
-        return "⚠️ Configure a API Key do Groq na barra lateral."
+        return "Configure a API Key nos Secrets do Streamlit Cloud."
+    provedor_atual = st.session_state.get("provedor_ia", "groq")
+    # Tenta Gemini primeiro
+    if provedor_atual == "gemini":
+        try:
+            import google.generativeai as genai
+            genai.configure(api_key=api_key)
+            model_g = genai.GenerativeModel("gemini-2.0-flash", system_instruction=system)
+            resp = model_g.generate_content(prompt)
+            return resp.text
+        except Exception:
+            pass
+    # Fallback Groq
     try:
-        client_g = Groq(api_key=api_key)
+        groq_key = api_keys_disponiveis.get("groq", api_key) if "api_keys_disponiveis" in dir() else api_key
+        client_g = Groq(api_key=groq_key)
         resp = client_g.chat.completions.create(
             model="llama-3.3-70b-versatile",
             messages=[{"role":"system","content":system},{"role":"user","content":prompt}],
@@ -1063,12 +1428,20 @@ def groq_call(prompt: str, system: str = "Você é SpotlightIA, assistente de ev
         )
         return resp.choices[0].message.content
     except Exception as e:
-        return f"Erro Groq: {e}"
+        return f"Erro: {e}"
 
 # ── Conteúdo principal ──────────────────────────────────────────────────────
-st.markdown("""
-<div class="main-heading">💬 SpotlightIA</div>
-<div class="main-subheading">Seu assistente inteligente para eventos privados</div>
+st.markdown(f"""
+<div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:4px">
+  <div>
+    <div class="main-heading">🎉 SpotlightIA</div>
+    <div class="main-subheading">Gestão inteligente de eventos · {tenant_data.get('nome','Spotlight Eventos')}</div>
+  </div>
+  <div style="text-align:right">
+    <div style="font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.08em">Eventos ativos</div>
+    <div style="font-size:28px;font-weight:800;background:linear-gradient(135deg,#6C63FF,#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent">{len(st.session_state.eventos_cadastrados)}</div>
+  </div>
+</div>
 """, unsafe_allow_html=True)
 
 tab_chat, tab_eventos, tab_checklist, tab_estrutura, tab_buffet, tab_logistica, tab_foto, tab_orcamento, tab_dash, tab_email, tab_rsvp, tab_convite, tab_crono, tab_docs, tab_widget, tab_contrato, tab_mapa, tab_saas, tab_relatorio, tab_crm, tab_qr, tab_kanban, tab_mc, tab_landing, tab_pix, tab_scoring = st.tabs([T("chat"), T("eventos"), T("checklist"), T("estrutura"), T("buffet"), T("logistica"), T("foto"), T("orcamento"), T("dashboard"), T("confirmacoes"), T("rsvp"), T("convite"), T("cronograma"), T("documentos"), T("widget"), "📑 Contrato", "🗺️ Mapa do Evento", "💎 Planos & SaaS", "📊 Relatório PDF", "🤝 CRM", "🎫 QR Code", "🔁 Funil Kanban", "🎙️ Roteiro MC", "📣 Captação", "💳 PIX & Pagamento", "🎯 Scoring de Leads"])
@@ -1080,9 +1453,21 @@ tab_chat, tab_eventos, tab_checklist, tab_estrutura, tab_buffet, tab_logistica, 
 with tab_chat:
     # Mensagem de boas-vindas
     if not st.session_state.messages:
+        # KPIs rápidos no topo do chat
+        kpi1, kpi2, kpi3, kpi4 = st.columns(4)
+        kpi1.metric("📅 Eventos ativos", len(st.session_state.eventos_cadastrados))
+        total_rsvp = len(st.session_state.get("lista_rsvp", []))
+        conf_rsvp = sum(1 for r in st.session_state.get("lista_rsvp", []) if r.get("status") == "Confirmado")
+        kpi2.metric("✅ RSVPs confirmados", conf_rsvp)
+        total_cli = len(st.session_state.get("crm_clientes", []))
+        kpi3.metric("👥 Clientes CRM", total_cli)
+        kpi4.metric("🌐 Idioma", st.session_state.get("idioma", "🇧🇷 Português")[:5])
+        st.divider()
+
         with st.chat_message("assistant", avatar="🎉"):
+            nome_emp = tenant_data.get("nome", "Spotlight Eventos") if "tenant_data" in dir() else "Spotlight Eventos"
             st.markdown(
-                "Olá! Sou a **SpotlightIA**, assistente inteligente da Spotlight Eventos.\n\n"
+                f"Olá! Sou a **SpotlightIA**, assistente inteligente da **{nome_emp}**.\n\n"
                 "Posso ajudar com:\n"
                 "- ✅ **RSVP e confirmação de presenças**\n"
                 "- 📋 **Planejamento e checklist**\n"
@@ -1219,36 +1604,134 @@ O usuário está conversando especificamente sobre este evento — priorize ele 
                     else:
                         st.error(f"❌ Erro: {e}")
 
+    # Auto-responder mensagens pendentes (vindas de botões de ação)
+    if st.session_state.get("pending_response") and st.session_state.messages and st.session_state.messages[-1]["role"] == "user":
+        st.session_state.pending_response = False
+        pending_msg = st.session_state.messages[-1]["content"]
+
+        # Mostra a mensagem do usuário
+        with st.chat_message("user", avatar="👤"):
+            st.markdown(pending_msg)
+
+        # Monta contexto
+        system = SYSTEM_PROMPT + "\n\n" + T("idioma_sistema")
+        if st.session_state.eventos_cadastrados:
+            eventos_json = json.dumps(st.session_state.eventos_cadastrados, ensure_ascii=False, indent=2)
+            system += f"""\n\n## MEMÓRIA DE EVENTOS\n{eventos_json}"""
+        if "lista_rsvp" in st.session_state and st.session_state.lista_rsvp:
+            rsvp_json = json.dumps(st.session_state.lista_rsvp, ensure_ascii=False, indent=2)
+            system += f"""\n\n## MEMÓRIA DE RSVPs\n{rsvp_json}"""
+        if st.session_state.evento_atual:
+            ev = st.session_state.evento_atual
+            system += f"""\n\n## EVENTO ATIVO\n{json.dumps(ev, ensure_ascii=False, indent=2)}"""
+
+        # Chama a IA
+        with st.chat_message("assistant", avatar="🎉"):
+            with st.spinner("Processando..."):
+                try:
+                    provedor = st.session_state.get("provedor_ia", "groq")
+                    reply = ""
+                    if provedor == "gemini" and "gemini" in api_keys_disponiveis:
+                        try:
+                            import google.generativeai as genai
+                            genai.configure(api_key=api_keys_disponiveis["gemini"])
+                            model_gem = genai.GenerativeModel("gemini-2.0-flash", system_instruction=system)
+                            history_gem = [{"role": "user" if m["role"]=="user" else "model", "parts": [m["content"]]} for m in st.session_state.messages[:-1]]
+                            chat_gem = model_gem.start_chat(history=history_gem)
+                            resp_gem = chat_gem.send_message(pending_msg)
+                            reply = resp_gem.text
+                        except Exception:
+                            if "groq" in api_keys_disponiveis:
+                                client = Groq(api_key=api_keys_disponiveis["groq"])
+                                groq_msgs = [{"role":"system","content":system}] + st.session_state.messages
+                                resp = client.chat.completions.create(model="llama-3.3-70b-versatile", messages=groq_msgs, max_tokens=1024)
+                                reply = resp.choices[0].message.content
+                    else:
+                        groq_key = api_keys_disponiveis.get("groq", api_key)
+                        client = Groq(api_key=groq_key)
+                        groq_msgs = [{"role":"system","content":system}] + st.session_state.messages
+                        resp = client.chat.completions.create(model="llama-3.3-70b-versatile", messages=groq_msgs, max_tokens=1024)
+                        reply = resp.choices[0].message.content
+
+                    if reply:
+                        st.markdown(reply)
+                        st.session_state.messages.append({"role": "assistant", "content": reply})
+                        if DB_DISPONIVEL and st.session_state.get("tenant"):
+                            db.chat_salvar(st.session_state.tenant, "user", pending_msg)
+                            db.chat_salvar(st.session_state.tenant, "assistant", reply)
+                except Exception as e:
+                    st.error(f"Erro: {e}")
+
     # Sugestões de perguntas
     if not st.session_state.messages:
-        st.markdown("#### 💡 Sugestões")
+        st.markdown("#### 💡 Experimente perguntar:")
         sugestoes = T("sugestoes")
-        cols = st.columns(len(sugestoes))
-        for i, sug in enumerate(sugestoes):
-            with cols[i]:
-                if st.button(sug, use_container_width=True, key=f"sug_{i}"):
-                    st.session_state.messages.append({"role": "user", "content": sug})
+        # Primeira linha — 3 sugestões
+        cols1 = st.columns(3)
+        for i in range(min(3, len(sugestoes))):
+            with cols1[i]:
+                if st.button(f"→ {sugestoes[i]}", use_container_width=True, key=f"sug_{i}"):
+                    st.session_state.messages.append({"role": "user", "content": sugestoes[i]})
+                    st.session_state.pending_response = True
                     st.rerun()
+        # Segunda linha — restantes
+        if len(sugestoes) > 3:
+            cols2 = st.columns(len(sugestoes) - 3)
+            for i in range(3, len(sugestoes)):
+                with cols2[i-3]:
+                    if st.button(f"→ {sugestoes[i]}", use_container_width=True, key=f"sug_{i}"):
+                        st.session_state.messages.append({"role": "user", "content": sugestoes[i]})
+                        st.session_state.pending_response = True
+                        st.rerun()
 
 # ── TAB: EVENTOS ────────────────────────────────────────────────────────────
 with tab_eventos:
     st.markdown("### 📅 Eventos cadastrados")
     status_labels = {"confirmed": "✅ Confirmado", "pending": "🟡 Em planejamento", "vip": "⭐ VIP"}
+    status_colors = {"confirmed": "rgba(107,203,119,0.1)", "pending": "rgba(255,217,61,0.08)", "vip": "rgba(124,106,255,0.1)"}
+
+    # Resumo rápido
+    ev_conf = sum(1 for e in st.session_state.eventos_cadastrados if e["status"] == "confirmed")
+    ev_pend = sum(1 for e in st.session_state.eventos_cadastrados if e["status"] == "pending")
+    ev_vip  = sum(1 for e in st.session_state.eventos_cadastrados if e["status"] == "vip")
+    ev_total_conv = sum(e["convidados"] for e in st.session_state.eventos_cadastrados)
+
+    m1, m2, m3, m4 = st.columns(4)
+    m1.metric("📅 Total", len(st.session_state.eventos_cadastrados))
+    m2.metric("✅ Confirmados", ev_conf)
+    m3.metric("🟡 Planejamento", ev_pend)
+    m4.metric("👥 Total convidados", ev_total_conv)
+
+    st.divider()
 
     for ev in st.session_state.eventos_cadastrados:
-        with st.expander(f"{ev['nome']} — {ev['data']}"):
-            col1, col2, col3 = st.columns(3)
-            col1.metric("📍 Local", ev["local"])
+        tipo_emoji = {"casamento":"💍","hackathon":"💻","vip":"⭐","corporativo":"💼","aniversario":"🎂","palestra":"🎤"}.get(ev.get("tipo",""),"🎉")
+        cor_fundo = status_colors.get(ev["status"], "rgba(124,106,255,0.06)")
+
+        with st.expander(f"{tipo_emoji} {ev['nome']} — {ev.get('data','—')}"):
+            col1, col2, col3, col4 = st.columns(4)
+            col1.metric("📍 Local", ev.get("local","—"))
             col2.metric("👥 Convidados", ev["convidados"])
             col3.metric("📌 Status", status_labels.get(ev["status"], "—"))
+            col4.metric("🎯 Tipo", ev.get("tipo","—").title())
 
-            if st.button(f"💬 Conversar sobre este evento", key=f"btn_{ev['nome']}"):
+            # Barra de progresso RSVP
+            rsvps_ev = [r for r in st.session_state.get("lista_rsvp", []) if r.get("evento") == ev["nome"]]
+            conf_ev = sum(1 for r in rsvps_ev if r.get("status") == "Confirmado")
+            pct = conf_ev / ev["convidados"] if ev["convidados"] > 0 else 0
+            st.progress(min(pct, 1.0), text=f"RSVP: {conf_ev}/{ev['convidados']} confirmados ({int(pct*100)}%)")
+
+            col_b1, col_b2 = st.columns(2)
+            if col_b1.button(f"💬 Conversar sobre este evento", key=f"btn_{ev['nome']}", use_container_width=True):
                 st.session_state.evento_atual = ev
                 st.session_state.messages.append({
                     "role": "user",
-                    "content": f"Quero informações sobre o evento: {ev['nome']}",
+                    "content": f"Me dê um resumo completo do evento {ev['nome']}: data {ev.get('data','—')}, local {ev.get('local','—')}, {ev['convidados']} convidados, status {ev.get('status','—')}. Quais são as próximas ações e pendências?",
                 })
+                st.session_state.pending_response = True
                 st.rerun()
+            if col_b2.button(f"📋 Ver checklist", key=f"btn_ck_{ev['nome']}", use_container_width=True):
+                st.session_state.evento_atual = ev
 
 # ── TAB: CHECKLIST ──────────────────────────────────────────────────────────
 with tab_checklist:
@@ -1316,8 +1799,9 @@ with tab_checklist:
 
     if st.button("💬 Pedir ajuda com o planejamento", use_container_width=True):
         pendentes = [itens[i] for i, c in enumerate(st.session_state[check_key]) if not c]
-        msg = f"Estou planejando um evento do tipo '{tipo_checklist}'. Ainda preciso resolver: {', '.join(pendentes)}. Pode me ajudar?"
+        msg = f"Estou planejando um evento do tipo '{tipo_checklist}' com o checklist da SpotlightIA. Ainda faltam {len(pendentes)} itens: {', '.join(pendentes)}. Para cada item pendente, me dê um passo a passo de como resolver, com prazos e fornecedores sugeridos."
         st.session_state.messages.append({"role": "user", "content": msg})
+        st.session_state.pending_response = True
         st.rerun()
 
 # ── TAB: ESTRUTURA & TÉCNICA ─────────────────────────────────────────────────
@@ -1410,6 +1894,7 @@ with tab_estrutura:
         if st.button(f"💬 Perguntar sobre {cat['titulo']}", key=f"btn_est_{cat['titulo']}", use_container_width=True):
             msg = f"Preciso de orientacao sobre {cat['titulo']} para o meu evento. Pode me ajudar com o planejamento tecnico?"
             st.session_state.messages.append({"role": "user", "content": msg})
+            st.session_state.pending_response = True
             st.rerun()
 
         st.divider()
@@ -1470,6 +1955,7 @@ with tab_estrutura:
         if st.button(f"💬 Perguntar sobre {cat['titulo']}", key=f"btn_ext_{cat['titulo']}", use_container_width=True):
             msg = f"Preciso de orientacao sobre {cat['titulo']} para o meu evento. Pode me ajudar?"
             st.session_state.messages.append({"role": "user", "content": msg})
+            st.session_state.pending_response = True
             st.rerun()
 
         st.divider()
@@ -1514,6 +2000,7 @@ with tab_buffet:
     if st.button("💬 Pedir cardápio sugerido para este evento", use_container_width=True, key="btn_cardapio"):
         msg = f"Preciso montar um cardapio para {num_pessoas} pessoas, {tipo_refeicao}, duracao de {duracao_horas}h. Pode sugerir opcoes e quantidades?"
         st.session_state.messages.append({"role": "user", "content": msg})
+        st.session_state.pending_response = True
         st.rerun()
 
     st.divider()
@@ -1576,6 +2063,7 @@ with tab_buffet:
                     if st.button(f"💬 Saiba mais sobre {s['nome']}", key=f"btn_srv_{s['nome']}", use_container_width=True):
                         msg = f"Quero saber mais sobre o servico de {s['nome']} para o meu evento. Quais os custos, cuidados e como contratar?"
                         st.session_state.messages.append({"role": "user", "content": msg})
+                        st.session_state.pending_response = True
                         st.rerun()
                     st.markdown("---")
 
@@ -1606,6 +2094,7 @@ with tab_buffet:
         if st.button("💬 Pedir cardápio adaptado a essas restrições", use_container_width=True, key="btn_restricoes"):
             msg = f"Meu evento tem convidados com as seguintes restricoes alimentares: {', '.join(restricoes_sel)}. Como adaptar o cardapio e quais cuidados devo ter com o buffet?"
             st.session_state.messages.append({"role": "user", "content": msg})
+            st.session_state.pending_response = True
             st.rerun()
 
 # ── TAB: LOGÍSTICA & TRANSPORTE ───────────────────────────────────────────────
@@ -1650,6 +2139,7 @@ with tab_logistica:
     if st.button("💬 Pedir ajuda com logística de estacionamento", use_container_width=True, key="btn_estac"):
         msg = f"Tenho um evento {tipo_evento_log} com {total_conv} convidados. {'Tem open bar.' if tem_open_bar == 'Sim' else 'Sem open bar.'} Como planejar o estacionamento e o valet?"
         st.session_state.messages.append({"role": "user", "content": msg})
+        st.session_state.pending_response = True
         st.rerun()
 
     st.divider()
@@ -1707,6 +2197,7 @@ with tab_logistica:
                     if st.button(f"💬 Saiba mais sobre {m['nome']}", key=f"btn_log_{m['nome']}", use_container_width=True):
                         msg = f"Como contratar e organizar o servico de {m['nome']} para o meu evento?"
                         st.session_state.messages.append({"role": "user", "content": msg})
+                        st.session_state.pending_response = True
                         st.rerun()
                     st.markdown("---")
 
@@ -1747,6 +2238,7 @@ with tab_logistica:
         pendentes_sin = [sinalizacao[i] for i, c in enumerate(st.session_state[check_key_sin]) if not c]
         msg = f"Preciso de ajuda para organizar a sinalizacao do evento. Ainda falta: {', '.join(pendentes_sin)}. Como resolver?"
         st.session_state.messages.append({"role": "user", "content": msg})
+        st.session_state.pending_response = True
         st.rerun()
 
 # ── TAB: FOTO & VÍDEO ─────────────────────────────────────────────────────────
@@ -1791,6 +2283,7 @@ with tab_foto:
         if r["live"]: extras.append("transmissao ao vivo")
         msg = f"Preciso montar o briefing de foto e video para um evento {tipo_ev_foto} com {num_conv_foto} convidados, {duracao_foto}h de duracao e {ambientes} ambiente(s). Recursos desejados: {', '.join(extras) if extras else 'padrao'}. Pode me ajudar?"
         st.session_state.messages.append({"role": "user", "content": msg})
+        st.session_state.pending_response = True
         st.rerun()
 
     st.divider()
@@ -1862,6 +2355,7 @@ with tab_foto:
                     if st.button(f"💬 Saiba mais sobre {m['nome']}", key=f"btn_foto_{m['nome']}", use_container_width=True):
                         msg = f"Quero contratar {m['nome']} para o meu evento. Quais os cuidados, o que pedir no contrato e qual o custo medio?"
                         st.session_state.messages.append({"role": "user", "content": msg})
+                        st.session_state.pending_response = True
                         st.rerun()
                     st.markdown("---")
 
@@ -1904,6 +2398,7 @@ with tab_foto:
         pendentes_bf = [briefing_items[i] for i, c in enumerate(st.session_state[check_key_bf]) if not c]
         msg = f"Preciso montar o briefing audiovisual do meu evento. Ainda falta definir: {', '.join(pendentes_bf)}. Pode me orientar?"
         st.session_state.messages.append({"role": "user", "content": msg})
+        st.session_state.pending_response = True
         st.rerun()
 
 # ── TAB: CALCULADORA DE ORÇAMENTO ─────────────────────────────────────────────
@@ -2005,6 +2500,7 @@ with tab_orcamento:
             f"Total estimado: R$ {total_orc:,.0f}. Pode me ajudar a refinir essa proposta e identificar onde posso economizar?".replace(",", ".")
         )
         st.session_state.messages.append({"role": "user", "content": msg})
+        st.session_state.pending_response = True
         st.rerun()
 
     st.divider()
@@ -2055,6 +2551,7 @@ with tab_orcamento:
             if st.button(f"💬 Contratar {pac['nome']}", key=f"btn_pac_{pac['nome']}", use_container_width=True):
                 msg = f"Tenho interesse no pacote {pac['nome']} da Spotlight Eventos. Pode me dar mais detalhes e iniciar o processo de contratacao?"
                 st.session_state.messages.append({"role": "user", "content": msg})
+                st.session_state.pending_response = True
                 st.rerun()
 
 # ── TAB: DASHBOARD DE MÉTRICAS ────────────────────────────────────────────────
@@ -2141,8 +2638,9 @@ with tab_dash:
     st.dataframe(df_rsvp, use_container_width=True)
 
     if st.button("💬 Pedir relatório completo de RSVP", use_container_width=True, key="btn_rsvp_relatorio"):
-        msg = "Preciso de um relatorio completo de RSVP dos eventos cadastrados. Quais acoes tomar para aumentar a taxa de confirmacao?"
+        msg = f"Gere um relatório completo de RSVP dos meus {len(st.session_state.eventos_cadastrados)} eventos. Para cada evento, informe: confirmados, pendentes, recusados e taxa. Depois sugira 3 ações concretas para aumentar a taxa de confirmação dos pendentes."
         st.session_state.messages.append({"role": "user", "content": msg})
+        st.session_state.pending_response = True
         st.rerun()
 
     st.divider()
@@ -2188,6 +2686,7 @@ with tab_dash:
     if st.button("💬 Analisar pendências com o agente", use_container_width=True, key="btn_alertas"):
         msg = "Quais sao as principais pendencias dos meus eventos agora? Me ajude a priorizar as acoes mais urgentes."
         st.session_state.messages.append({"role": "user", "content": msg})
+        st.session_state.pending_response = True
         st.rerun()
 
     st.divider()
@@ -2452,6 +2951,7 @@ with tab_rsvp:
     if st.button("💬 Pedir texto de convite com este link", key="btn_texto_convite", use_container_width=True):
         msg = f"Gere um texto de convite elegante para o evento '{evento_link}' que inclua o link de confirmacao de presenca: {link_gerado}"
         st.session_state.messages.append({"role": "user", "content": msg})
+        st.session_state.pending_response = True
         st.rerun()
 
     st.divider()
@@ -2641,6 +3141,7 @@ with tab_convite:
         if st.button("💬 Gerar texto do convite para WhatsApp", use_container_width=True, key="btn_wpp_conv"):
             msg = f"Crie um texto de convite elegante e curto para enviar via WhatsApp para o evento '{ev_conv}' em {ev_info_conv.get('data','—')} no {ev_info_conv.get('local','—')}. Dress code: {dress_code or 'nao definido'}. Inclua o link de RSVP: {rsvp_link_conv or '[link]'}."
             st.session_state.messages.append({"role": "user", "content": msg})
+            st.session_state.pending_response = True
             st.rerun()
 
 
@@ -2711,6 +3212,7 @@ with tab_crono:
         if st.button("💬 Pedir revisão do cronograma ao agente", use_container_width=True, key="btn_crono_ia"):
             msg = f"Revise o cronograma do evento '{ev_crono}': {crono_txt}. Identifique gaps de tempo, riscos e sugira melhorias."
             st.session_state.messages.append({"role": "user", "content": msg})
+            st.session_state.pending_response = True
             st.rerun()
 
 
@@ -2787,6 +3289,7 @@ with tab_docs:
             nomes = ", ".join([d["descricao"] for d in docs_ev])
             msg = f"Tenho os seguintes documentos para o evento '{ev_doc}': {nomes}. O que devo verificar em cada um deles antes do evento?"
             st.session_state.messages.append({"role": "user", "content": msg})
+            st.session_state.pending_response = True
             st.rerun()
     else:
         st.info("Nenhum documento anexado ainda. Faça upload acima.")
@@ -2920,6 +3423,7 @@ with tab_widget:
     if st.button("💬 Pedir ajuda para instalar o widget no meu site", use_container_width=True, key="btn_widget_ia"):
         msg = "Como instalo o widget da SpotlightIA no meu site? Uso WordPress / Webflow / HTML puro."
         st.session_state.messages.append({"role": "user", "content": msg})
+        st.session_state.pending_response = True
         st.rerun()
 
 # ── TAB: GERADOR DE CONTRATO ──────────────────────────────────────────────────
@@ -3068,6 +3572,7 @@ with tab_contrato:
             if st.button("💬 Revisar contrato com o agente", use_container_width=True, key="btn_rev_contrato"):
                 msg = f"Revise o contrato gerado para o evento '{ev_ct}', pacote {pacote_ct}, valor R$ {valor_ct:,.2f}. Identifique riscos, cláusulas que devo reforçar e sugestões de melhoria."
                 st.session_state.messages.append({"role": "user", "content": msg})
+                st.session_state.pending_response = True
                 st.rerun()
 
 
@@ -3184,6 +3689,7 @@ with tab_mapa:
             ev_info_m = next((e for e in st.session_state.eventos_cadastrados if e["nome"] == ev_mapa), {})
             msg = f"Preciso de sugestões de layout para a planta do evento '{ev_mapa}' com {ev_info_m.get('convidados','—')} convidados em {ev_info_m.get('local','—')}. Como posicionar palco, mesas, buffet e área de dança?"
             st.session_state.messages.append({"role": "user", "content": msg})
+            st.session_state.pending_response = True
             st.rerun()
 
 # ── TAB: PLANOS & SAAS ────────────────────────────────────────────────────────
@@ -3405,6 +3911,7 @@ with tab_relatorio:
         if st.button("💬 Analisar relatório com o agente", use_container_width=True, key="btn_rel_ia"):
             msg = f"Analise o relatório de {mes_rel}/{ano_rel}: {total_ev} eventos, {conf_ev} confirmados, taxa RSVP de {taxa_rsvp}%, receita estimada R$ 87.500. Quais os pontos de atenção e recomendações para o próximo mês?"
             st.session_state.messages.append({"role": "user", "content": msg})
+            st.session_state.pending_response = True
             st.rerun()
 
 # ── TAB: CRM DE CLIENTES ──────────────────────────────────────────────────────
@@ -3471,10 +3978,12 @@ with tab_crm:
             if col_btn_c1.button("💬 Conversar", key=f"crm_chat_{cli['id']}", use_container_width=True):
                 msg = f"Me dê um resumo do cliente {cli['nome']} da empresa {cli['empresa']}, tipo de evento {cli['tipo']}, {cli['eventos']} eventos realizados e valor total R$ {cli['valor_total']:,.0f}. Quais ações de relacionamento sugere?".replace(",",".")
                 st.session_state.messages.append({"role":"user","content":msg})
+                st.session_state.pending_response = True
                 st.rerun()
             if col_btn_c2.button("📧 E-mail", key=f"crm_email_{cli['id']}", use_container_width=True):
                 msg = f"Escreva um e-mail de relacionamento para {cli['nome']} da {cli['empresa']}, cliente {cli['status'].lower()} do tipo {cli['tipo']}."
                 st.session_state.messages.append({"role":"user","content":msg})
+                st.session_state.pending_response = True
                 st.rerun()
             # Editar notas inline
             nova_nota = col_btn_c3.text_input("Nova nota", key=f"crm_nota_{cli['id']}", label_visibility="collapsed", placeholder="Adicionar nota...")
@@ -3544,6 +4053,7 @@ with tab_crm:
             if col_a2.button("💬 Gerar mensagem", key=f"aniv_{a['id']}", use_container_width=True):
                 msg = f"Escreva uma mensagem de feliz aniversário para {a['nome']} da {a['empresa']}, cliente {a['tipo']} da Spotlight Eventos. Tom profissional e caloroso."
                 st.session_state.messages.append({"role":"user","content":msg})
+                st.session_state.pending_response = True
                 st.rerun()
     else:
         st.info("Nenhum aniversariante este mês.")
@@ -3786,8 +4296,9 @@ with tab_kanban:
     # Análise do funil com IA
     if st.button("💬 Analisar funil com o agente", use_container_width=True, key="btn_kanban_ia"):
         resumo_k = " | ".join([f"{col}: {len(cards)} deals (R$ {sum(c['valor'] for c in cards):,})".replace(",",".") for col, cards in st.session_state.kanban.items()])
-        msg = f"Analise meu funil de vendas: {resumo_k}. Quais oportunidades priorizar? Onde estou perdendo mais negócios? Sugira ações para aumentar a taxa de conversão."
+        msg = f"Analise detalhadamente meu funil de vendas: {resumo_k}. Para cada etapa: 1) Identifique gargalos 2) Sugira ações específicas por deal 3) Calcule a previsão de receita dos próximos 30 dias 4) Recomende quais deals priorizar esta semana."
         st.session_state.messages.append({"role":"user","content":msg})
+        st.session_state.pending_response = True
         st.rerun()
 
 
@@ -4029,6 +4540,7 @@ with tab_landing:
                     tipos_leads[l["tipo"]] = tipos_leads.get(l["tipo"],0) + 1
                 msg = f"Recebi {len(st.session_state.leads_landing)} leads. Distribuição por tipo: {tipos_leads}. Quais abordar primeiro e qual estratégia de vendas usar para cada tipo?"
                 st.session_state.messages.append({"role":"user","content":msg})
+                st.session_state.pending_response = True
                 st.rerun()
         else:
             st.info("Nenhum lead recebido ainda. Compartilhe o link da landing page!")
@@ -4131,7 +4643,7 @@ with tab_pix:
                 info = st.session_state.get("pix_info", {"tipo":"cobrança","valor":0,"evento":"—","cliente":"cliente"})
                 prompt_pix_wpp = f"Gere uma mensagem de WhatsApp profissional e cordial para cobrar o {info.get('tipo','cobrança').lower()} de R$ {info.get('valor',0):,.2f} do evento '{info.get('evento','—')}' para o cliente {info.get('cliente','cliente')}. Inclua instrução para usar o PIX copia-e-cola. Tom: formal mas amigável. Máximo 4 parágrafos."
                 with st.spinner("Gerando com Groq..."):
-                    msg_pix = groq_call(prompt_pix_wpp, max_tokens=400)
+                    msg_pix = ia_call(prompt_pix_wpp, max_tokens=400)
                     st.session_state["wpp_msg_gerada"] = msg_pix
                 st.success("Mensagem gerada! Veja na aba WhatsApp.")
 
@@ -4235,7 +4747,7 @@ Retorne APENAS este JSON (sem markdown, sem explicação):
 Classificações possíveis: Frio (0-30), Morno (31-60), Quente (61-80), Muito Quente (81-100)"""
 
                     with st.spinner(f"Analisando {cli['nome']}..."):
-                        resp_score = groq_call(prompt_score, max_tokens=300)
+                        resp_score = ia_call(prompt_score, max_tokens=300)
                         try:
                             import re as _re
                             json_match = _re.search(r'\{.*\}', resp_score, _re.DOTALL)
@@ -4279,6 +4791,7 @@ Classificações possíveis: Frio (0-30), Morno (31-60), Quente (61-80), Muito Q
                     cli_data_strat = next((c for c in st.session_state.crm_clientes if c["nome"] == cliente_sel), {})
                     msg = f"Crie uma estratégia de vendas detalhada para o prospect {cliente_sel} (score {score_val}/100 — {classif}). Tipo de evento: {cli_data_strat.get('tipo','—')}. Inclua: abordagem inicial, argumentos de venda, objeções prováveis e como contorná-las, proposta ideal e timing."
                     st.session_state.messages.append({"role":"user","content":msg})
+                    st.session_state.pending_response = True
                     st.rerun()
 
     with aba_sc2:
@@ -4311,6 +4824,7 @@ Classificações possíveis: Frio (0-30), Morno (31-60), Quente (61-80), Muito Q
                 top3 = [r["Cliente"] for r in dados_rank[:3]]
                 msg = f"Crie um plano de ação semanal para converter os 3 leads mais quentes: {', '.join(top3)}. Para cada um, sugira a abordagem ideal, canal de contato (WhatsApp, e-mail, reunião) e argumentos personalizados."
                 st.session_state.messages.append({"role":"user","content":msg})
+                st.session_state.pending_response = True
                 st.rerun()
         else:
             st.info("Nenhum lead analisado ainda. Use a aba 'Análise automática' para pontuar seus prospects.")
